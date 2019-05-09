@@ -1,4 +1,4 @@
-# SeasonalFluImmunityPropagationTemp
+# SeasonalFluImmunityPropagation
 This repository houses code developed for the analysis presented in the scientific publication "Seasonal influenza: Modelling approaches to capture immunity propagation" by Edward M. Hill, Stavros Petrou, Simon de Lusignan, Ivelina Yonova, and Matt J. Keeling.
 
 Please find below an explainer of the directory structure within this repository.
