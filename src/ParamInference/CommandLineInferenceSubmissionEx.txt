@@ -1,0 +1,36 @@
+#Run inference scheme from command line
+
+#ARGS input listing
+# ARG 1: RunID
+# ARG 2: Observed data filename (csv files in Data/ILIData directory)
+# ARG 3: SeasonsToSimulate (from 2009/10 season onwards; 9 corresponds to 2009/10-2017/18, 8 to 2009/10-2016/17 etc)
+# ARG 4: N_alpha 
+# ARG 5: alpha (set at 0.5 corresponds to using median SummStat value as cut-off at end of each generation)
+# ARG 6: MinAcceptRate (if negative, inference scheme will run for MaxGen generations regardless of acceptance rate per generation)
+# ARG 7: MaxGen
+# ARG 8: PerturbVarFn
+# ARG 9: PriorFn
+# ARG 10: SummStatFn
+# ARG 11: SampleFromPriorFn
+# ARG 12: ModelSimnFn
+# ARG 13: FirstGenFromFileFlag (indicator value, 0: Sample from priors; 1: First generation parameter sets & associated attributes read from file
+# Note, ARGS 8-12 are names of functions residing in SeasonalFluModel_SerialInferenceFns.jl
+
+# Examples
+
+## Empirical data - Four season fit
+julia SeasonalFluModel_SerialRunInference.jl 601 "../../Data/ILIData/EmpData_InfluenzaPositiveGPConsultRateByStrain_2009to2018.csv" 7 1000 0.5 -1 10 OLCMPerturbVarFn Prior_FourSeasonFit SummStatFun SampleFirstGenFn_FourSeasonFit RunModelSimn 0
+
+## Empirical data - Five season fit
+julia SeasonalFluModel_SerialRunInference.jl 602 "../../Data/ILIData/EmpData_InfluenzaPositiveGPConsultRateByStrain_2009to2018.csv" 8 1000 0.5 -1 10 OLCMPerturbVarFn Prior_FiveSeasonFit SummStatFun SampleFirstGenFn_FiveSeasonFit RunModelSimn 0
+
+## Empirical data - Six season fit
+julia SeasonalFluModel_SerialRunInference.jl 603 "../../Data/ILIData/EmpData_InfluenzaPositiveGPConsultRateByStrain_2009to2018.csv" 9 1000 0.5 -1 10 OLCMPerturbVarFn Prior_SixSeasonFit SummStatFun SampleFirstGenFn_SixSeasonFit RunModelSimn 0
+
+## Empirical data - Six season fit with extended model
+julia SeasonalFluModel_SerialRunInference.jl 604 "../../Data/ILIData/EmpData_InfluenzaPositiveGPConsultRateByStrain_2009to2018.csv" 9 1000 0.5 -1 10 OLCMPerturbVarFn Prior_SixSeasonFitPlusMultiSeasonImm SummStatFun SampleFirstGenFn_SixSeasonFitPlusMultiSeasonImm RunModelSimnWithMultiSeasonImm 0
+
+
+## Synthetic data - Six season fit
+julia SeasonalFluModel_SerialRunInference.jl 605 "../../Data/ILIData/SynthData_InfluenzaPositiveGPConsultRateByStrain_2009to2018.csv" 9 1000 0.5 -1 10 OLCMPerturbVarFn Prior_SixSeasonFit SummStatFun SampleFirstGenFn_SixSeasonFit RunModelSimn 0
+
