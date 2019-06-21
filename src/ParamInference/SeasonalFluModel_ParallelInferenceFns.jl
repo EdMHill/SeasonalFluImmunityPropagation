@@ -20,7 +20,7 @@
 # (i) FUNCTION TO PERTURB SAMPLES WHEN GENERATING PROPOSED PARAMETER SETS
 #-------------------------------------------------------------------------------
 
-@everywhere function  OLCMPerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,FirstGenFlag)
+@everywhere function  OLCMPerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,GenT)
 # Optimal local covariance matrix (OLCM)
 # Uses a multivariate normal distribution with a covariance matrix based on a subset of the particles from the
 # previous iteration, whose distances are smaller than the threshold of the current iteration
@@ -28,18 +28,16 @@
 #Inputs:
 #   RetainedParams,RetainedWeights - Current set of samples with associated weights
 # 	SurvivorParticleIdx - Boolean true/false states defining the subset of the particles from the previous iteration, whose distances are smaller than the threshold of the current iteratio
-#	FirstGenFlag - For first generation, sample from scaled covariance
+#	GenT - Generation number, used to determine if should sample using a global covariance
 #Outputs:
 #   C - Variance-covariance matrix. Three dimensional, slice per particle
 
-if FirstGenFlag == 1 #First generation,
+if GenT == 1 #First generation,
 	C_SingleSlice = 2.0*cov(RetainedParams,AnalyticWeights(RetainedWeights[:]),corrected=true)::Array{Float64}
 
 	#Check if C is non-singular. Modify if singular.
-	while !isposdef(C_SingleSlice) #Check
-		println("Before C eigvals: $(eigvals(C_SingleSlice))")
-		C_SingleSlice = C_SingleSlice + abs(minimum(eigvals(C_SingleSlice)))*(1+1e-14)I
-		println("After C eigvals: $(eigvals(C_SingleSlice))")
+	while rank(C_SingleSlice) != ParamNum #Check
+		C_SingleSlice = C_SingleSlice + 1e-12I
 	end
 
 	#Repeat covariance matrix, once per parameter set
@@ -82,11 +80,9 @@ else
 		end
 
 
-		#Check if C is non-singular. Modify if singular.
-		while !isposdef(Current_C) #Check
-			println("Before Current_C eigvals: $(eigvals(Current_C))")
-			Current_C = Current_C + 1e-14I
-			println("After Current_C eigvals: $(eigvals(Current_C))")
+		#Check if Current_C is non-singular. Blow it up if singular.
+		while rank(Current_C) != ParamNum #Check
+			Current_C = Current_C + 1e-12I
 		end
 
 		#Assign revised covariance to C (collection of covariance arrays)
