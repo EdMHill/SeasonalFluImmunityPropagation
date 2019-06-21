@@ -20,6 +20,7 @@
 # (i) FUNCTION TO PERTURB SAMPLES WHEN GENERATING PROPOSED PARAMETER SETS
 #-------------------------------------------------------------------------------
 
+
 @everywhere function  OLCMPerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,GenT)
 # Optimal local covariance matrix (OLCM)
 # Uses a multivariate normal distribution with a covariance matrix based on a subset of the particles from the
@@ -32,6 +33,12 @@
 #Outputs:
 #   C - Variance-covariance matrix. Three dimensional, slice per particle
 
+#Define number of parameters and particles
+RetainedParamsDims = size(RetainedParams)
+ParamNum = RetainedParamsDims[2]  #Number of parameters matches number of columns in parameter array
+ParticleNum = RetainedParamsDims[1] #Number of particles in generation matches number of rows in parameter array
+
+#Update covariance arrays
 if GenT == 1 #First generation,
 	C_SingleSlice = 2.0*cov(RetainedParams,AnalyticWeights(RetainedWeights[:]),corrected=true)::Array{Float64}
 
@@ -59,10 +66,7 @@ else
     m = sum(SPP_thetas.*SPP_NormWeights,1)
 
 	#Initialise variance-covariance array
-	RetainedParamsDims = size(RetainedParams)
-	ParamNum = RetainedParamsDims[2]  #Number of parameters matches number of columns in parameter array
-	ParticleNum = RetainedParamsDims[1] #Number of particles in generation matches number of rows in parameter array
-	C = zeros(ParamNum, ParamNum,ParticleNum)
+	C = zeros(ParamNum,ParamNum,ParticleNum)
 
 	#Loop through each particle and compute covariance
 	for kk = 1:1:ParticleNum
