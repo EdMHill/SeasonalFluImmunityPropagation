@@ -64,8 +64,8 @@ if FirstGenFromFileFlag==1 #Get first generation particles from previous inferen
     RetainedSummStat = SummStat[1:N_alpha]
 
     #Set covariance matrix from accepted samples (based on information from file)
-    FirstGenFlag = 0
-    C = PerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,FirstGenFlag)
+    GenNum = 1
+    C = PerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,GenNum)
 else #Get first generation particles from prior
     #Initialisation
     FullParamSet,Particle_Weights = SampleFirstGenFn(N)
@@ -104,10 +104,9 @@ else #Get first generation particles from prior
     epsilon = RetainedSummStat[end]
 
     #Set covariance matrix from accepted samples (in first generation set)
-    FirstGenFlag = 1
+    GenNum = 0
     SurvivorParticleIdx = 0 #Placeholder value. As first generation SurvivorParticleIdx not used within PerturbVarFn
-    C = PerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,FirstGenFlag)
-    FirstGenFlag = 0 #First generation now done, set FirstGenFlag to 0
+    C = PerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,GenNum)
 end
 
 #Reorder FullParamSet, Weights, SummStat. Place retained values before unretained
@@ -316,7 +315,7 @@ while (AcceptRate > MinAcceptRate) && (GenT < MaxGen)
     epsilon = RetainedSummStat[end]
 
     #Set covariance matrix from accepted samples
-    C = PerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,FirstGenFlag)
+    C = PerturbVarFn(RetainedParams,RetainedWeights,SurvivorParticleIdx,GenT)
 
     #Reorder FullParamSet, Weights, SummStat. Place retained values before unretained
     FullParamSet[1:N_alpha,:] = RetainedParams
