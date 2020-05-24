@@ -1,11 +1,14 @@
 # SeasonalFluImmunityPropagation
-This repository houses code developed for the analysis presented in the scientific publication "Seasonal influenza: Modelling approaches to capture immunity propagation" by Edward M. Hill, Stavros Petrou, Simon de Lusignan, Ivelina Yonova, and Matt J. Keeling.
+This repository houses code developed for the analysis presented in the scientific publication "Seasonal influenza: Modelling approaches to capture immunity propagation" by Edward M. Hill, Stavros Petrou, Simon de Lusignan, Ivelina Yonova, and Matt J. Keeling.  
 
-Please find below an explainer of the directory structure within this repository.
+Publication details:
+Hill et al. (2019) Seasonal influenza: Modelling approaches to capture immunity propagation. PLOS Computational Biology. 15(10): e1007096. doi: 10.1371/journal.pcbi.1007096.  
+
+Please find below an explainer of the directory structure within this repository.  
 
 # Data
 
-## MortalityData 
+## MortalityData
 Population mortality data (from ONS)
 
 ## ILIData
@@ -26,11 +29,11 @@ Daily vacc. uptake proportions for at-risk, low risk, entire population groups
 	Seasonal influenza vaccine uptake by season, for 2008/09 onwards    
 #### NonAgeStrucModel_DailyVaccUptakeCalYr_PandemicFluVacc_EMH.xlsx
 	Pandemic influenza vaccine uptake for the 2008/09 influenza season  
-		
+
 ## WHOFluNet
 Data on circulating influenza virus composition from World Health Oragnisation FluNet database
-	
-# Results	
+
+# Results
 ## EvaluatingModelFit
 Scripts to produce bar plots, violin plots and scatter plots.  
 ModelSimnData directory contains a file per fit performed, each containing outputs from 1,000 model simulation replicates.
@@ -52,15 +55,15 @@ Outputs from the ABC inference scheme reside in the following directories, compr
 	Output files generated fitting to the empirical data covering 2012/13-2017/18  
 #### SynthFitData  
 	Output files generated fitting to the synthetic data  
-		
+
 # src
 
 ## ParamInference
 Perform parameter inference on data using Approximate Bayesian Computation with an Adpative Population Monte Carlo scheme.
 
-#### ABC_APMC 
+#### ABC_APMC
 	Directory housing files containing the ABC adaptive population Monte Carlo algorithm
-	
+
 ## PosteriorPredictiveModelSimns
 Run simulations of the model using parameter sets representing samples from the posterior distribution.
 
